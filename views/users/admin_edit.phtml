@@ -1,0 +1,18 @@
+<p>Use this form to manage users.</p>
+<?php
+echo $form->create('User', array('action' => 'edit', 'class' => 'admin-input-form'));
+echo $form->input('username', array('size' => '20'));
+echo $form->input('group_id', array('label' => 'Group'));
+echo $form->input('password', array('type'=>'password', 'size' => '20'));
+echo 'Leave blank to not alter password.';
+echo $form->input('name', array('size' => '35'));
+echo $form->input('email',array('label' => 'Email Address', 'size' => '40'));
+echo $form->hidden('id'); ?>
+<div class="submit">
+<input type="submit" value="Save" />
+<?
+if($pageAction == 'edit') {
+	echo ' or '.$html->link('Cancel', array('action' => 'index'));
+}?>
+</div>
+<? echo $form->end(); ?>

@@ -1,0 +1,28 @@
+<div class="content-box">
+<h2><?php echo $title_for_layout?></h2>
+<p>Know of a place to buy a netbook that we don't have listed? You can
+tell us about it here and we'll add it to our database.</p>
+<?php
+echo $form->create('Link', array('class' => 'input-form'));
+echo $form->input('product_id', array('empty' => true, 'selected' => $productId));
+echo $form->input('retailer_id', array('empty' => true));
+echo $form->input('url', array('label' => 'Product URL', 'size' => 40));
+echo $form->input('region_id', array('label' => 'Currency'));
+echo $form->input('price', array('size' => 5));?>
+<div class="input">
+<label>Captcha</label>
+<p>Please enter the two words in the box below.</p></div>
+<?
+echo $captcha;
+echo ife(isset($captchaError), '<div class="error-message">Please check the captcha and try again.</div>');
+echo $form->end('Add Link'); ?>
+<div class="info-box">
+<p>Use this form to inform us of a place to purchase a netbook that we do not have listed on our site. Each link submitted undergoes a thorough check for validity before it is added to the site.</p>
+<p>Storbital only links to trusted retailers, but just
+because your retailer isn't in the list, it doesn't means it's not
+trusted. <a href="http://www.storbital.com/blog/contact-us">Contact us</a> with the name and link about
+a new retailer, and we will look into it and add it to the site if we see fit, on top of adding any netbook links we find there!</a></p>
+<p>If you are a netbook retailer and would like your catalogue of links added to our site, <a href="http://www.storbital.com/blog/contact-us">contact us</a>.</p>
+<p>All referral/affiliate/commission parameters in links will be removed, to ensure our users get the cleanest URL possible.</p>
+</div>
+</div>

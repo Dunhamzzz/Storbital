@@ -1,0 +1,194 @@
+<?php
+$prod->setLocalRegion($localRegion);
+echo $html->docType('xhtml-trans')."\n"; ?>
+<?php echo $openGraph->html();?>
+<head>
+	<title><?php echo $title_for_layout; ?></title>
+	<?php echo $html->charset();?>
+	<?php if($this->params['controller'] == 'products' && $this->action == 'view'): ?>
+		<meta property="og:site_name" content="Storbital" />
+		<meta property="og:title" content="<?=$product['Product']['name']?>"/>
+	    <meta property="og:type" content="product"/>
+	    <meta property="og:url" content="http://buyersguide.umpcmedia.com<?=$html->url();?>"/>
+	    <meta property="og:image" content="http://buyersguide.umpcmedia.com/<?=$product['Product']['image_dir'].'/'.$product['Product']['image'];?>"/>
+		<meta property="fb:app_id" content="180948576449" />
+		<meta property="fb:admins" content="505549054"/>
+	<? endif; ?>
+	<?php
+		if(!empty($meta['keywords'])) {
+			$keywords = $meta['keywords'];
+		} else {
+			$keywords = 'compare netbooks, comparison, prices, netbook, nettops, specifications, price, where to buy, buyers guide, Dell, Acer, MSI, Asus, Nokia, Samsung';
+		}
+		
+		if(!empty($meta['description'])) {
+			$description = $meta['description'];
+		} else {
+			$description = 'Compare netbooks, nettops and tablets side by side and find out the best deals with Storbital.';
+		}
+		
+		if(!empty($breadcrumbs)) {
+			if(count($breadcrumbs) > 1) {
+				$up = $breadcrumbs[count($breadcrumbs)-2];
+			} else {
+				$up = array('title' => 'Storbital Home', 'url' => '/');
+			}
+			echo '<link rel="up" title="'.$up['title'].'" href="'.$up['url'].'"/>';
+		}
+		
+		echo $html->meta('keywords',$keywords);
+		echo $html->meta('description', $description) . "\n\t";
+		echo $html->meta('icon') . "\n\t";
+		echo $html->css('storbital') . "\n\t";
+		echo $html->script(array(
+			'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js',
+			'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js',
+			'global.js'
+		));
+		echo $scripts_for_layout;
+	?>
+</head>
+<body>
+	<div id="header">
+	<div class="contain">
+		<h1 id="logo"><a href="/" title="Go to Storbital Home">Storbital<img src="/img/layout/storbital-162x40.jpg" alt="Storbital" /></a></h1>
+		<div id="user-box">
+		<?php if(isset($user)): ?>
+			 <p>Welcome <span class="username"><?php echo $user['User']['name']?></span>. <?php echo $storbital->logout(); ?></p>
+			<?php else: ?>
+				<?php echo $storbital->login('Welcome to Storbital, please');?>
+		<?php endif; ?>
+		</div>
+	</div>
+	</div>
+	<div id="menu-wrapper">
+		<ul id="menu" class="contain">
+			<li class="first"><a href="/">Home</a></li>
+			<li><a href="/netbooks/">Netbooks</a></li>
+			<li><a href="/tablets/">Tablets</a></li>
+			<li><a href="/nettops/">Nettops</a></li>
+			<li><a href="/blog/">Blog</a></li>
+			<li id="regions"><span>Currency: </span>
+			<?php
+			echo $html->link(
+				$html->image('icons/gb.png', array('alt' => 'Change to GBP', 'title' => 'Click this flag to change your region to UK')),
+				array('controller' => 'regions', 'action' => 'change' , 'gb'),
+				array('escape' => false, 'class' => ($localRegion['id'] == 'GB' ? 'selected': ''))
+			);
+			echo $html->link(
+				$html->image('icons/us.png', array('alt' => 'Change to USD', 'title' => 'Click this flag to change your region to USA')),
+				array('controller' => 'regions', 'action' => 'change', 'us'),
+				array('escape' => false, 'class' => ($localRegion['id'] == 'US' ? 'selected': ''))
+			);
+			echo $html->link(
+				$html->image('icons/eu.png', array('alt' => 'Change to EUR', 'title' => 'Click this flag to change your region to Mainland Europe')),
+				array('controller' => 'regions', 'action' => 'change', 'eu'),
+				array('escape' => false, 'class' => ($localRegion['id'] == 'EU' ? 'selected': ''))
+			);
+
+			?>
+			</li>
+		</ul>
+	</div>
+	<div id="page">
+	<div class="contain">
+		<?php echo $session->flash(); ?>
+		<div id="welcome-banner" class="content-box">
+			<p>Welcome to <strong>Storbital</strong>, where you can compare specifications and prices on all the latest gadgets including tablet's netbooks and mobiles.</p>
+			<p>We are currently in Alpha, so please bear with us if you encounter any problems.</p>
+		</div>
+		<form id="search-banner" class="content-box" method="get" action="/products/search">
+		<div id="search-inputs">
+			<input id="search-input" name="q" type="text" />
+			<input id="search-button" type="submit" value="Search" />
+		</div>
+		<div id="autocomplete-landing"></div>
+		</form>
+		<?php if($sidebar !== false): ?>
+		<div id="content" class="with-sidebar">
+		<?php else: ?>
+		<div id="content">
+		<?php endif; ?>
+		<ul id="breadcrumb" class="content-box">
+			<li><a href="/" title="Comparison Home"><span class="home-icon"></span>Storbital</a></li>
+			<?php if(is_array($breadcrumbs)):?>
+				<?php foreach($breadcrumbs as $breadcrumb) :?>
+				<li><span></span><a href="<?php echo $breadcrumb['url'];?>" title="<?php echo $breadcrumb['title'];?>"><?php echo $breadcrumb['text'];?></a></li>
+				<?php endforeach; ?>
+			<?php endif;?>
+		</ul>
+		<?php echo $content_for_layout; ?>
+		</div>
+		<?php if($sidebar !== false): ?>
+		<div id="sidebar">
+			<div id="shortlist-box" class="content-box">
+			<h3><?php echo $html->link('Your Shortlist', array('controller' => 'products', 'action' => 'compare'));?></h3>
+			<p class="note">Add products that take your fancy to your shortlist. You can compare the products on your shortlist at anytime browsing Storbital.</p>
+			<ul id="shortlist">
+			<?php if(isset($shortlist) && !empty($shortlist)): ?>
+				<?php foreach($shortlist as $shortlistProduct): ?>
+					<?php echo $this->element('shortlist_link', array('product' => $shortlistProduct)); ?>
+				<?php endforeach; ?>
+			<?php else: ?>
+			<li id="no-shortlist-items">You have no items in your shortlist yet.<br/>
+			Look for the green &quot;Shortlist&quot; button across the site to add products.</li>
+			<?php endif; ?>
+			</ul>
+			<p class="shortlist-buttons">
+				<a id="shortlist-compare" href="/compare" class="go-button">Compare Products</a>
+				<a id="shortlist-clear" <?php if(!isset($shortlist) || empty($shortlist)) { echo 'style="display:none" '; }?>href="/shortlist/delete/all">Clear your shortlist</a>
+			</p>
+			<?php if(!isset($user)): ?>
+				<p class="note">You are using Storbital in guest mode and will lose your shortlist when you leave the site.
+					<?php echo $storbital->login('Please');?> to prevent this.
+				</p>
+			<?php endif; ?>
+			</div>
+			<div id="mpu" class="content-box">
+				MPU?
+			</div>
+			<?php if(isset($productHistory) && !empty($productHistory)) : ?>
+			<div id="recent" class="content-box">
+			<h3>Recently Viewed</h3>
+			<?php
+			foreach($productHistory as $recentProduct) {
+				echo $prod->widget($recentProduct, 'recent');
+			} ?>
+			<p class="note">Up to 5 recently viewed products will be displayed here.</p>
+			</div>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+	</div>
+	</div>
+	<div id="footer" class="contain">
+		<p class="copyright">Copyright &copy; 2011 Storbital.com - <a href="/admin" rel="nofollow">Contributor Login</a><br/>
+		Storbital.com  and it's affiliates accepts no liability for independent retailers and prices/features may differ from those displayed.<br/>
+		All product/manufacturer/retailer images and logos are copyright to their respective owners.</p>
+	</div>
+	<?php if(!isset($user)):?>
+	<div id="login-overlay" class="overlay">
+		<?php echo $this->element('loginSplash');?>
+	</div>
+	<?php endif;?>
+	<?php  /*?>
+<script type="text/javascript" src="http://umpcmediacom.skimlinks.com/api/skimlinks.js"></script>
+<script type="text/javascript">
+var skimlinks_pub_id = '258X46112';
+var skimlinks_exrel = 'noskim';
+var skimlinks_domain = 'go.storbital.com';
+skimlinks();
+</script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7598515-9");
+pageTracker._setDomainName(".storbital.com");
+pageTracker._trackPageview();
+} catch(err) {}</script> */?>
+<?php echo $js->writeBuffer(); ?>
+</body>
+</html>

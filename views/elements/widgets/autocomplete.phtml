@@ -1,0 +1,10 @@
+<li style="background-image: url(<?php echo $storbital->imageURL($content['image'][0], $content['image'][1], 'small');?>)">
+	<a href="<?php echo $content['url']; ?>" title="<?php echo $content['name']; ?>">
+	<?php echo $content['name']; ?>
+	<span><?php echo $content['category']['name'];?> - <?php echo $content['cpu']['name'];?>
+	</span>
+	<?php if(array_key_exists('lowest', $content)): ?>
+		<span class="autocompleteprice"><?php echo $content['lowest'];?></span>
+	<?php endif;?>
+	</a>
+</li>

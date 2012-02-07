@@ -1,0 +1,26 @@
+<? // Pagination buttons, all formatted nicely.
+$counter = explode('-',$paginator->counter(array('format' => "%page%-%pages%")));
+
+if($paginator->current() != 0){ //ie. there are pages.
+	echo '<div class="pagination">';
+	if($counter[1] > 1) {
+		echo '<p class="pages"><span class="pages-label">Pages: </span>';
+		
+		if($counter[0] != 1) {
+			echo $paginator->first('<< First');
+		}
+		if($paginator->hasPrev()) {
+			echo $paginator->prev('<');
+		}
+		
+		echo $paginator->numbers(array('separator' => ' '));
+		
+		if($paginator->hasNext()) {
+			echo $paginator->next('>');
+		}
+		if($counter[1] != $paginator->current()) {
+			echo $paginator->last('Last >>');
+		}
+	}
+	echo '</p></div>';
+}

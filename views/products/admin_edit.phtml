@@ -1,0 +1,109 @@
+<?php
+if(!empty($this->data)) {
+	$pageAction = 'edit';
+	$selectedIds = array();
+	foreach($this->data['Tag'] as $tags) {
+		$selectedIds[] = $tags['id'];
+	}
+} else {
+	$selectedIds = array();
+}
+?>
+<p>Use this form to add/edit a product. Please ensure you fill in the form as best as you can and adhere to the correct format.</p>
+<?php
+echo $form->create('Product', array(
+	'type' => 'file',
+	'class' => 'product-form',
+	'action' => 'edit'
+));
+?>
+<fieldset class="product-add">
+<?php
+echo $form->input('manufacturer_id', array('empty' => true));
+echo $form->input('category_id', array('empty' => true));
+echo $form->input('name', array('label' => 'Product Name'));
+echo $form->input('url_slug', array('label' => 'URL Slug', 'autocomplete' => 'off'));
+echo $form->input('short_desc', array('label' => 'Short Description', 'after' => '<br/>Should be similiar to the first paragraph of description.'));
+echo $form->input('description', array('after' => '<br />HTML is allowed.'));
+echo $form->input('image', array('type' => 'file', 'after' => '<p>Leave blank to not change.</p>'));
+echo $form->input('image_dir', array('type' => 'hidden'));
+echo $form->input('cpu_id', array('label' => 'Processor', 'empty' => true));
+echo $form->input('gpu_id', array('label' => 'Graphics','empty' => true));
+echo $form->input('popular');
+?>
+<p>Should this product appear on the homepages and main categories?</p>
+<?php
+echo $form->input('publish');
+echo $form->submit('Save');
+?>
+</fieldset>
+<div class="info-box">
+<p>This form is for putting in the basic details of the product you are adding to the database.</p>
+<p>Put the <strong>full name including manufacturer</strong> into the "Product Name" field, for example "Dell Mini 10v". The "URL SLug" field is created automatically from the Product name, and should not contain any special chracters or punctuation other than a dash or underscore.</p>
+<p>Please also enter a brief description, of the product, that is around 100-200 words long.</p>
+<p>For the product image, include an image that has the product (or multiple) placed upon a white background, these are often easily obtained from <a target="_blank" href="http://images.google.co.uk/images?q=dell+mini+10">Google image search</a>. The image should be in landscape format and at least 300 x 300 pixels, which is the smallest size we use on this site.</p>
+<?
+if($pageAction == 'edit' && !empty($this->data['Product']['image_dir'])) {
+ echo '<p>The current image is displayed below:<br/><br/>';
+ echo $storbital->image($this->data['Product']['image_dir'], $this->data['Product']['image'], 'normal', array('class' => 'logo-preview-info'));
+ echo '<input type="checkbox" name="data[Product][image][remove]" value="yes"/>Check this to remove image.';
+} else {
+ echo '<p>Be sure to upload an image for this product!</p>';
+}
+?>
+</div>
+<div class="fieldset-wrapper">
+<?php foreach($tagGroupsThreaded as $tagGroup) : ?>
+<fieldset class="product-add">
+<legend><?php echo $tagGroup['TagGroup']['name'];?></legend>
+<div class="input">
+	<?php if(!empty($tagGroup['children'])) : ?>
+		<?php foreach($tagGroup['children'] as $tagGroupChildren) : ?>
+			<label><?php echo $tagGroupChildren['TagGroup']['name']; ?></label>
+			<?php echo $storbital->tagSelect($tagGroupChildren, $selectedIds); ?>
+			<hr />
+		<?php endforeach; ?>
+	<?php endif; ?>
+	<?php if(!empty($tagGroup['Tag'])) :?>
+		<label>Tags:</label>
+		<?php echo $storbital->tagSelect($tagGroup, $selectedIds); ?>
+	<?php endif;?>
+</div>
+</fieldset>
+<?php endforeach; ?>
+<fieldset>
+<?php
+echo $form->input('dimensions_mm', array('label' => 'Dimensions (mm)', 'after' => 'HxWxD'));
+echo $form->input('weight_kg', array('label' => 'Weight (KG)', 'size' => '4', 'after' =>
+'kg or '.$form->text('weight_pounds', array('id' => 'weightInPounds', 'size' => '4')).'lbs'
+));
+echo $form->input('colours', array('empty'=> true, 'label' => 'Colour Options'));
+echo $form->input('battery_wh', array('label' => 'Battery wH', 'size' => '2'));
+echo $form->input('battery_hours', array('label' => 'Battery Life', 'after'=> 'Hours', 'size' => '2'));
+?>
+</fieldset>
+<div class="info-box">
+<p>These details are for various information about the hardware. The x's in a CPU field denote any chracter, for example N280 and N270 both come under "N2xx".</p>
+<p>If there is only one option for storage size, put the same amount in the storage size max and min fields.</p>
+<p>For weight, we only use the metric (kg) unit, if that is not available you can use the lbs box next to it and it will automatically convert the value to kilograms for you.</p>
+</div>
+</div>
+<div class="fieldset-wrapper">
+<fieldset class="product-add">
+<?php
+echo $form->input('extras');
+if($pageAction == 'edit'): ?>
+	<div class="input">
+		<label>Added By</label>
+		<p><?php echo $this->data['User']['username'];?></p>
+	</div>
+<?php endif; ?>
+</fieldset>
+<div class="info-box">
+<p>Finally put anything else that you feel is worth a mention in this box. This includes features that Storbital currently doesn't cater for and limited editions that may be available.</p>
+<p>Also, if you have not finished this product yet, untick the "Publish" box to not show the product on the live site.</p>
+</div>
+</div>
+<?
+echo $form->input('user_id', array('type' => 'hidden'));
+echo $form->end('Save');

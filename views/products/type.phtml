@@ -1,0 +1,43 @@
+<?php
+$prod->setShortlist(@$shortlist);
+$paginator->options(array(
+	'update' => '#content',
+	'url' => array(
+		'controller' => 'products',
+		'action' => 'type',
+		$type
+	)
+));
+?>
+<div class="content-box grid-holder">
+<h2><?php echo $title_for_layout; ?></h2>
+	<p>Here are the most popular <?php echo $type;?> available for you to compare and buy through Storbital.</p>
+	<?php foreach($products as $product): ?>
+		<?php echo $prod->widget($product, 'grid') ;?>
+	<?php endforeach; ?>
+</div>
+<div class="content-box">
+<h3>Popular <?php echo ucfirst($type); ?> Manufacturers</h3>
+	<div id="manus">
+	<?php foreach($manufacturers as $manu): ?>
+		<div>
+		<?php
+			echo $storbital->image($manu['Manufacturer']['logo_dir'],$manu['Manufacturer']['logo'], null, array(
+				'alt' => $manu['Manufacturer']['name'].' Logo',
+				'title' => ucfirst($type).' by '.$manu['Manufacturer']['name']));
+			
+			$manuProductLinks = array();
+			foreach($manu['Product'] as $manuProduct) {
+				$manuProductLinks[] = $prod->link($manuProduct);
+			}
+			
+			echo '<p>'.$text->toList($manuProductLinks).'</p>';
+		?>
+		</div>
+	<?php endforeach; ?>
+	</div>
+</div>
+<div class="content-box">
+	<h3>Cheapest <?php echo ucfirst($type); ?></h3>
+</div>
+<?php echo $js->writeBuffer(); ?>

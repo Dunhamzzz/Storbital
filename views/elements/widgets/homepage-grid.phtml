@@ -1,0 +1,11 @@
+<div class="widget grid">
+	<h3 style="background-image: url(<?php echo $storbital->imageURL($content['image'][0],$content['image'][1]); ?>)">
+		<a href="<?php echo $content['url']; ?>" title="<?php echo $content['name']; ?>"><span><?php echo $content['name']; ?></span></a></h3>
+	<div class="details">
+		<?php echo $prod->shortlist($content['id']);?> | <a href="<?php echo $content['url']; ?>"> More Details</a>
+	</div>
+	<?php if(array_key_exists('lowest', $content)) : ?>
+	<span class="button-note">From</span>
+	<a href="<?php echo $content['url']; ?>#buy"><?php echo $content['lowest'];?></a>
+	<?php endif; ?>
+</div>

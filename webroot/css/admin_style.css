@@ -1,0 +1,592 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td { 
+	margin: 0;
+	font-family: Arial, Helvecta;
+	font-size: 12px;
+}
+
+body {
+	background: #fff;
+}
+
+h1,h2,h3,h4,h5,p {
+	margin: 0 0 8px 0;
+	padding: 0;
+}
+
+h2, h3 {
+	font-size: 21px;
+	letter-spacing: 2px;
+}
+
+h3, h2.h3 {
+	font-size: 16px;
+}
+
+h1 span, h2 span, h3 span {
+	color: #c59641;
+}
+
+a,a:visited {
+	text-decoration: none;
+	color: #c59641;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+img {
+	border: 0;
+}
+
+ul,ol {
+	margin: 5px 20px;
+	padding: 0 20px;
+}
+
+legend {
+	font-weight: bold;
+	font-size: 12px;
+}
+
+label {
+	font-weight: bold;
+}
+
+/* Forms */
+div.input {
+	margin-bottom: 10px;
+}
+
+div.input label {
+	width: 150px;
+	float: left;
+	display: block;
+	font-weight: bold;
+	margin-top: 3px;
+}
+
+div.input.error {
+	
+}
+
+div.error-message {
+	color: red;
+}
+
+form div.submit {
+	margin-top: 10px;
+	clear: both;
+}
+
+div.input.rating {
+	height: 30px;	
+}
+
+div.input.rating span {
+	margin-left: 5px;
+}
+
+textarea {
+	font-size: 14px;
+	width: 270px;
+	font-family: Arial;
+}
+
+/* Form/Info Boxes */
+fieldset {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #e4e4e4;
+	padding: 10px;
+	background: #f5f5f5;
+	margin: 0 0 15px;
+	width: 450px;
+	float: left;
+}
+
+fieldset p {
+	margin-top: 0;	
+}
+ 
+legend {
+	font-size: 16px;
+	border: 1px solid #2c2c2c;
+	padding: 1px 5px;
+	background: #1a1a1a;
+	color: #fff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.info-box {
+	background: #2c2c2c;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #000;
+	padding: 10px;
+	color: #fff;
+	float: right;
+	width: 450px;
+}
+
+.info-box-light {
+	background: #E6E6E6;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 10px 10px;
+	border: 1px solid #d5d5d5;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.info-box p {
+	margin: 0 0 8px;
+}
+
+#flashMessage, #authMessage {
+	margin-bottom: 10px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: #FFFFD4;
+	padding: 10px;
+	border: 1px solid #d5d5d5;
+}
+
+#flashMessage.message {
+	
+}
+
+#flashMessage.bad {
+	background: #FFDFE5;
+	border-color: red;
+}
+
+#filters {
+	overflow: hidden;
+}
+
+#wrap {
+	width: 100%;	
+}
+
+#admin-header {
+	height: 30px;
+	background: #2c2c2c;
+	padding: 3px;
+	border-bottom: 1px solid #999;
+	margin-bottom: 15px;
+}
+
+#admin-logo {
+	float: left;	
+}
+
+#user-info {
+	color: #fff;
+	text-align: right;
+	margin: 7px 11px 0 0;
+}
+
+#admin-content {
+	margin-left: 180px;
+	padding: 0 15px;
+	border-left: 1px solid #e4e4e4;
+	float: none;
+	overflow: visible;
+}
+
+#admin-sidebar {
+	float: left;
+	padding-left: 15px;
+}
+
+#admin-menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#admin-menu li {
+	font-weight: bold;
+	margin-bottom: 10px;
+	font-size: 16px
+}
+
+#admin-menu li ul {
+	list-style: none;
+	margin: 5px 0 0 10px;
+	padding: 0;
+}
+
+#admin-menu li ul li {
+	font-weight: normal;
+	margin-bottom: 3px;
+	font-size: 12px
+}
+
+.info-box {
+	float: none;
+	width: inherit;
+	margin-left: 487px;
+}
+
+.fieldset-wrapper {
+	overflow: hidden;
+	margin: 5px 0;
+	clear: both;
+}
+
+.fieldset-wrapper fieldset {
+	margin-bottom: 5px;
+	clear: left;
+}
+
+.fieldset-wrapper .info-box {
+	margin-top: 12px;
+}
+
+.fieldset-wrapper fieldset hr {
+	color: #fff;
+}
+
+.microbutton {
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+	cursor: pointer;
+}
+
+.list-table {
+	width: 100%;
+	border: 1px solid #D5D5D5;
+	padding: 2px;
+}
+
+.list-table thead tr {
+	background: #1a1a1a;
+	color: #fff;
+}
+
+.list-table th {
+	text-align: center;	
+	font-weighT: normal;
+}
+
+.list-table tr {
+	height: 30px;
+}
+
+.list-table tr td {
+	border-bottom: 1px solid #999;
+	padding: 0 2px;
+}
+
+.highlight {
+	background: #ffffcc;
+}
+
+.popular {
+	background: #CFC;	
+}
+
+.bold {
+	font-size: xx-large;
+	color: #C59641;
+	font-weight: bold;
+}
+
+.url-cell {
+	width: 425px;
+	display: block;
+	float: left;
+	overflow: hidden;
+	height: 23px;
+	padding-top: 6px;
+	line-heighT: 18px;
+}
+
+.url-cell form input {
+	font-size: 11px;
+	padding: 0;
+	margin-top: 0;
+	border: 1px solid #1a1a1a;
+}
+
+.url-go {
+	margin-top: 6px;
+	display: inline-block;
+}
+
+.admin-input-form {
+	padding-top: 12px;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.admin-input-form fieldset {
+	margin-top: -12px;
+}
+
+#retailer-list td, #manu-list td {
+	font-size: 18px;
+	text-align: center;
+	height: 80px;
+}
+
+#manu-list td .inline-icon, #retailer-list td .inline-icon {
+	vertical-align: middle;	
+}
+
+.manu-logo-cell {
+	width: 180px;
+	height: 80px;
+}
+
+.logo-preview-info {
+	border: 1px solid #000;
+	display: block;
+	margin: 0 auto;
+}
+
+.product-form div.input {
+	color: #999;	
+}
+
+.product-form div.input p {
+	color: #000;	
+}
+
+.product-form div.input input {
+	margin-right: 5px;
+}
+
+.product-form div.input label {
+	color: #000;	
+}
+
+.tag-add {
+	cursor: pointer;
+	float: right;
+}
+
+.notation {
+	font-size: 8px;
+}
+
+.upgradeable {
+	float: right;
+}
+
+.addButton {
+	background: #1a1a1a;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 2px 3px;
+	margin: 0 4px;
+}
+
+.addButton a {
+	background: url(/img/icons/add.png) no-repeat right center;
+	padding-right: 20px;
+	color: #fff;
+	font-weight: bold;
+}
+
+#dashboard {
+	
+}
+
+.dashboard-section {
+	width: 50%;
+	float: left;
+	margin-bottom: 10px;
+}
+
+.dashboard-table {
+	width: 100%;
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.dashboard-table caption, .dashboard-section h3 {
+	font-size: 16px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	text-align: left;
+	margin-bottom: 3px;
+}
+
+.dashboard-table th {
+	background: #1a1a1a;
+	color: #fff;
+	font-weight: normal;
+	text-align: center;
+	font-size: 10px;
+}
+
+.dashboard-table td {
+	border-bottom: 1px solid #999;	
+}
+
+.admin-column {
+	width: 49%;
+	float: left;
+}
+
+#latest-products tbody {
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#products-list td {
+	height: 80px;
+}
+
+td.left, .list-table td.left {
+	text-align: left;
+	padding-left: 8px;
+}
+
+td.admin-image-cell {
+	background: #fff; 
+	border-right: 1px solid #999;
+	text-align: center;
+}
+
+.pagination {
+	float: right;
+	width: 440px;
+}
+
+
+.pagination .count {
+	float: left;
+	padding: 2px 4px;
+	font-size: 14px;
+}
+
+.pagination .pages {
+	float: right;
+}
+
+.pagination span {
+	float: left;
+	border: 1px solid #1a1a1a;
+	display: block;
+	margin: 0 2px;
+}
+
+.pagination .pages-label {
+	border: 0;
+	padding: 2px 4px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.pagination span a {
+	padding: 2px 4px;
+	display: block;
+}
+
+.pagination span a:hover {
+	text-decoration: none;	
+}
+
+.pagination span.current {
+	background: #1a1a1a;
+	color: #fff;
+	font-weight: bold;
+	padding: 2px 4px;
+}
+
+.pagination .nextprev {
+	margin: 0;
+}
+
+th a {
+	background-image: url(/img/icons/sort.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding: 0 18px;
+}
+
+th a.asc {
+	background-image: url(/img/icons/sort-asc.png);
+}
+
+th a.desc {
+	background-image: url(/img/icons/sort-desc.png);
+}
+
+.inline-icon {
+	vertical-align: bottom;
+}
+
+/* Auto Complete */
+.ui-autocomplete {
+	background: #fff;
+	width: 150px;
+	list-style: none;
+	border: 1px solid #000;
+	padding: 0;
+}
+
+.ui-autocomplete li {
+	cursor: pointer;
+	margin: 0;
+	
+}
+.ui-autocomplete a {
+	display: block;
+	padding: 2px;
+	
+}
+
+.ui-autocomplete a:hover {
+	color: #fff;
+	background: #c59641;
+	text-decoration: none;
+}
+
+.ui-stars-star,
+.ui-stars-cancel {
+  float: left;
+  display: block;
+  overflow: hidden;
+  text-indent: -999em;
+  cursor: pointer;
+}
+.ui-stars-star a,
+.ui-stars-cancel a {
+  width: 16px;
+  height: 15px;
+  display: block;
+  background: url(/img/icons/jquery.ui.stars.gif) no-repeat 0 0;
+}
+.ui-stars-star a {
+  background-position: 0 -32px;
+}
+.ui-stars-star-on a {
+  background-position: 0 -48px;
+}
+.ui-stars-star-hover a {
+  background-position: 0 -64px;
+}
+.ui-stars-cancel-hover a {
+  background-position: 0 -16px;
+}
+.ui-stars-star-disabled,
+.ui-stars-star-disabled a,
+.ui-stars-cancel-disabled a {
+  cursor: default !important;
+}
+
+/* homepage admin */
+#dotw-edit, #best-edit {
+	text-align: center;
+	width: 50%;
+	float: left;
+}

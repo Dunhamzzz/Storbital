@@ -1,0 +1,123 @@
+<script type="text/javascript">
+$(function() {
+	$('.edit').editable('/admin/links/ajaxUpdateUrl', {
+		id 		: 'data[id]',
+		name 	: 'data[url]',
+		height	: 17,
+		width	: 423,
+		event : 'dblclick',
+		callback : function(value, settings) {
+			eval('returnArray = '+value);
+			if(returnArray['success'] == 1) {
+				$(this).animate({ color: 'green'}, 250);
+			} else {
+				$(this).animate({ color: 'red'}, 250);
+			}
+			$(this).text(returnArray['value']);
+			$('#url-go-'+returnArray['id']).attr('href', returnArray['value']);
+		}
+	});
+
+	$('.publish-checkbox').click( function () {
+		var tr = $(this).closest('tr');
+		var action;
+		if($(this).is(':checked')) {
+			action = '1';
+		} else {
+			action = '0';
+		}
+		$.post(
+			'/admin/links/ajax_toggle_publish',
+			{'data[id]': tr.attr('id'), 'data[publish]' : action },
+			function(worked){
+				if(worked) {
+					if(action == '1') {
+						tr.animate({ backgroundColor: 'white'}, 250);
+					} else {
+						tr.animate({ backgroundColor: '#ffffcc'}, 250);
+					}
+				} else {
+					alert('Unable to complete request');
+				}
+			},
+			'text'
+		);
+	});
+});
+</script>
+<p>Use this page to manage product links in the database. Quick approve links with the checkbox, <span class="highlight">highlighted rows</span> are unapproved. Click the trash can icon<img class="inline-icon" src="/img/icons/delete.png"/> to delete a link. Links that were submitted by annonymous users on ths site are noted with <?=$html->image('icons/user_red.png', array('title' => 'Link was submitted by a user', 'class' => 'inline-icon'));?>, please be extra careful when validating these links.<?=$this->element('addButton');?></p>
+<?php echo $form->create('Link', array('action' => 'admin_index', 'id' => 'filters', 'class' => 'admin-input-form')); ?>
+<fieldset class="filter-options">
+<legend>Filter Links</legend>
+<p>Filter the displayed results with the form below:</p>
+<?
+echo $form->input('product_id', array('label' => 'By Product', 'empty' => true));
+echo $form->input('retailer_id', array('label' => 'By Retailer', 'empty' => true));
+?>
+<button type="submit" name="data[filter]" value="filter">Filter</button>
+<button type="submit" name="data[reset]" value="reset">Reset</button>
+</fieldset>
+<div class="info-box">
+<h3>Link Validation Guidelines</h3>
+<ul>
+	<li>Ensure that details like price, product, currency and retailer are correct.</li>
+	<li>Remove any obvious session/referral variables.</li>
+	<li>Ensure they're are no duplicates. (a tool for this will be added soon)</li>
+</ul>
+<p>You can check the link by clicking on this icon <?=$html->image('icons/link_go.png', array('class' => 'inline-icon'))?>. It's location is updated each time you edit the URL and it turns green.</p>
+</div>
+<?
+echo $form->end();
+echo $this->element('pagination');?>
+<table id="links-list" cellpadding="0" cellspacing="0" class="list-table">
+	<thead>
+		<tr>
+			<th><?php echo $paginator->sort('Product', 'Product.name', array('url' => $urlOptions)); ?></th>
+			<th><?php echo $paginator->sort('Retailer', 'Retailer.name', array('url' => $urlOptions)); ?></th>
+			<th>Product URL</th>
+			<th>Price</th>
+			<th>Monthly</th>
+			<th><?php echo $paginator->sort('Publish', 'Link.publish', array('url' => $urlOptions)); ?></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?
+	if(!empty($links)) {
+		foreach($links as $link) {?>
+		<tr id="link-<?=$link['Link']['id']?>" class="<?=ife($link['Link']['publish'],'','highlight')?>">
+			<td><?=$link['Product']['name']?></td>
+			<td><?=$link['Retailer']['name']?></td>
+			<td>
+				<span title="Double Click to Edit" class="edit url-cell" id="url-<?=$link['Link']['id']?>"><?=$link['Link']['url']?></span>
+				<? if($link['Link']['user_id'] == 0) {
+					echo $html->image('icons/user_red.png', array('title' => 'Link was submitted by a user', 'class' => 'inline-icon'));
+				}
+				?>
+				<a id="url-go-<?=$link['Link']['id']?>" class="url-go" href="<?=$link['Link']['url']?>" target="_blank"><?=$html->image('icons/link_go.png', array('class' => 'inline-icon'))?></a>
+			</td>
+			<td><img class="inline-flag" src="/img/icons/<?=strtolower($link['Region']['id'])?>.png" /><?php echo $link['Region']['currency_symbol_html'].number_format($link['Link']['price']);?></td>
+			<td><?php echo $link['Region']['currency_symbol_html'].number_format($link['Link']['price_monthly']);?></td>
+			<td>
+				<input autocomplete="off" id="p-<?=$link['Link']['id']?>" class="publish-checkbox" type="checkbox" name="data[publish]" <?=ife($link['Link']['publish'],' checked="checked"');?>/>
+				<?
+				echo $html->link($html->image('icons/delete.png'),array(
+					'action'=>'delete',
+					$link['Link']['id']),
+					array('class' =>' confirm_delete' ,'escape' => false));
+				echo '&nbsp;&nbsp;';
+				echo $html->link(
+					$html->image('icons/edit.png', array('alt' => 'Edit')),
+					array('controller' => 'links', 'action' => 'edit', 'admin' => true, $link['Link']['id']),
+					array('escape' => false)
+				);
+				?>
+			</td>
+		</tr>
+		<? }
+	} else {
+		echo '<tr><td colspan="8" style="text-align: center"><p>There are no results for this search critera.</p></td></tr>';
+	}
+	?>
+	</tbody>
+</table>
+<?php echo $form->end(); ?>

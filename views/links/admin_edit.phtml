@@ -1,0 +1,21 @@
+<p>Use this form to add a <?php echo $html->link('retailer', array('controller' => 'retailers', 'action' => 'index'))?> link to a <?php echo $html->link('product', array('controller' => 'products', 'action' => 'index'))?> in the Storbital database.</p>
+<?php echo $form->create('Link', array('class' => 'input-form'));?>
+<fieldset>
+<?php
+echo $form->input('product_id', array('empty' => true, 'selected' => @$productId));
+echo $form->input('Colour', array('empty' => true));
+echo $form->input('retailer_id', array('empty' => true));
+echo $form->input('url', array('label' => 'Product URL', 'size' => 40));
+echo $form->input('title', array('size' => 40));
+echo $form->input('region_id', array('label' => 'Currency'));
+echo $form->input('price', array('size' => 5));
+echo $form->input('price_monthly', array('size' => 5));
+echo $form->input('special_offer');
+echo $form->input('expire', array('empty' => true));
+echo $form->input('publish');
+echo $form->submit(ucfirst($pageAction).' Link');?>
+</fieldset>
+<div class="info-box">
+<p>Be sure to include http:// in the URL. Also please remove all affiliate/referral and any other non-essential URL parameters to help shorten the URL as much as possible.</p>
+</div>
+<?php echo $form->end(); ?>

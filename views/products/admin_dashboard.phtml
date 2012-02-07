@@ -1,0 +1,89 @@
+<div id="dashboard">
+<div class="dashboard-section">
+	<p>There are <span class="bold"><?=$numProducts?></span> products in the Storbital database.</p>
+</div>
+<div class="dashboard-section">
+	<table id="latest-products" cellpadding="2" cellspacing="0" class="dashboard-table">
+	<caption>Latest Products</caption>
+	<thead>
+	<tr>
+		<th></th>
+		<th>Name</th>
+		<th>Added</th>
+		<th># of Links</th>
+		<th style="width: 13px"></th>
+	</tr>
+	</thead>
+	<tbody>
+	<? foreach($latestProducts as $product) :
+		$class = '';
+		if($product['Product']['publish'] == 0) {
+			$class = ' class="highlight"';
+		}
+		?>
+		<tr <?echo ife($class, $class)?>>
+		<td class="admin-image-cell"><? echo $storbital->image($product['Product']['image_dir'], $product['Product']['image'], 'small')?></td>
+		<td class="left"><?
+			if($product['Product']['publish'] == 1) {
+				echo $html->link(
+					$product['Product']['name'],
+					array('controller' => 'products', 'action' => 'view', 'admin' => false, $product['Product']['url_slug']),
+					array('target' => '_blank')
+				);
+			} else {
+				echo $product['Product']['name'];
+			}
+			echo "&nbsp;&nbsp;";
+			echo $html->link(
+				$html->image('icons/edit.png', array('alt' => 'Edit', 'class' => 'inline-icon')),
+				array('action' => 'edit', $product['Product']['id']),
+				array('escape' => false)
+			);
+			echo $html->link(
+				$html->image('icons/link_add.png', array('alt' => 'Add Link', 'class' => 'inline-icon')),
+				array('controller' => 'links', 'action' => 'add', 'productId' => $product['Product']['id']),
+				array('escape' => false)
+			);
+				?></td>
+		<td><?=$time->timeAgoInWords($product['Product']['created'], array('format' => ' d/m/y'))?>
+		<td><?=count($product['Link'])?></td>
+	</tr>
+	<? endforeach;?>
+	</tbody>
+
+	</table>
+	<p><?=$html->link('View All', array('action' => 'index'))?></p>
+</div>
+<div class="dashboard-section">
+	<h3>To-Do List</h3>
+	<p>This is a list of planned features. Let me know if you have any suggestions.</p>
+	<ul>
+		<li>Quick link to other products in description box (and other advanced controls)</li>
+		<li>Reviews</li>
+		<li>New Design!</li>
+		<li>Blog Design</li>
+		<li><s>Setting Publish => false on a product to make it skip validation</s></li>
+	</ul>
+</div>
+<div class="dashboard-section">
+	<table id="user-leaderboard" cellpadding="2" cellspacing="0" class="dashboard-table">
+	<caption>User Leaderboard</caption>
+	<thead>
+	<tr>
+		<th>User</th>
+		<th># of Products</th>
+		<th># of Links</th>
+	</tr>
+	</thead>
+	<tbody>
+	<? foreach($users as $user) :?>
+	<tr>
+		<td class="left"><?=$user['User']['username'];?></td>
+		<td><?=$user['User']['product_count']?></td>
+		<td><?=$user['User']['link_count']?></td>
+	</tr>
+	<? endforeach;?>
+	</tbody>
+	</table>
+</div>
+</div>

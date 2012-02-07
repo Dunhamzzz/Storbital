@@ -1,0 +1,67 @@
+<p>Use this page to manage the retailers. Click the edit icon <?=$html->image('icons/edit.png', array('alt' => 'Edit', 'class' => 'inline-icon'));?> next to each retailers name to edit that retailer.</p>
+<?php echo $form->create('Retailer', array('action' => 'index', 'type' => 'file', 'class' => 'admin-input-form'));?>
+<fieldset>
+<legend><?php echo ucfirst($pageAction)?> Retailer</legend>
+<?php
+echo $form->input('name');
+echo $form->input('url_slug');
+echo $form->input('url', array('label' => 'Website URL'));
+echo $form->input('logo', array('type' => 'file'));
+if($pageAction == 'edit') echo 'Leave blank to not change the logo.';
+echo $form->input('dir', array('type' => 'hidden'));
+?>
+<div class="submit">
+<input type="submit" value="Save" />
+<?php
+if($pageAction == 'edit') {
+	echo ' or '.$html->link('Cancel', array('action' => 'index'));
+} ?>
+</div>
+</fieldset>
+<? if($pageAction == 'edit'): ?>
+<div class="info-box">
+<p>You are now <strong>editing</strong> the retailer '<?=$this->data['Retailer']['name']?>'. You can add a new one by clicking <?=$html->link('here',array('action' => 'index'))?>.</p>
+<p>The current logo is displayed below:<br/><br/>
+<?php echo $storbital->image($this->data['Retailer']['logo_dir'], $this->data['Retailer']['logo'], 'normal', array('class' => 'logo-preview-info'));?>
+</p>
+</div>
+<?
+endif;
+echo $form->end();?>
+<table id="retailer-list" class="list-table" cellpadding="0" cellspacing="0">
+<thead>
+<tr>
+	<th style="width: 80px;">Logo</th>
+	<th><?php echo $paginator->sort('Name', 'name'); ?></th>
+	<th style="width: 250px;">Website</th>
+	<th># of Links</th>
+</tr>
+</thead>
+<? foreach($retailers as $retailer): ?>
+<tr>
+	<td>
+	<?=$storbital->image($retailer['Retailer']['logo_dir'],$retailer['Retailer']['logo'],'display');?>
+</td>
+	<td><?
+		echo $html->link(
+				$retailer['Retailer']['name'],
+				array('controller' => 'retailers', 'action' => 'view', 'admin' => false, $retailer['Retailer']['url_slug']),
+				array('target' => '_blank')
+			);
+		echo "&nbsp;&nbsp;";
+		echo $html->link(
+			$html->image('icons/edit.png', array('alt' => 'Edit', 'class' => 'inline-icon')),
+			array('controller' => 'retailers', 'action' => 'index', 'admin' => true, $retailer['Retailer']['id']),
+			array('escape' => false)
+		);
+	?></td>
+	<td><?=$html->link($retailer['Retailer']['url'],$retailer['Retailer']['url'], array('target' => '_blank'))?></td>
+	<td><?=$html->link(count($retailer['Link']), array(
+		'controller' => 'links',
+		'action' => 'index',
+		'admin' => true,
+		'Link.retailer_id' => $retailer['Retailer']['id']
+	))?></td>
+</tr>
+<? endforeach;?>
+</table>

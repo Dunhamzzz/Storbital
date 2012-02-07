@@ -1,0 +1,61 @@
+<?php // fuck me this page needs sorting out
+	$label = array(
+		'best' => 'Best Seller',
+		'dotw' => 'Deal of the Week',
+	);
+	foreach($widgets as $widget) {
+		$productWidgetTypes[$widget['Widget']['name']] = $widget;
+	}
+?>
+<p>Use this page to manage the products features on the <a href="/">Storbital homepage</a>.</p>
+<?php echo $form->create(); ?>
+<div id="content" class="with-sidebar">
+	<div id="slideshow" class="content-box">
+		Slideshow stuff
+	</div>
+	<?php echo $prod->widget($productWidgetTypes['Deal of the Week']); ?>
+	<?php echo $prod->widget($productWidgetTypes['Best Selling']); ?>
+	<div id="dotw-edit">
+	<?php
+	echo $form->input('Widget.'.$productWidgetTypes['Deal of the Week']['Widget']['id'].'.product_id', array(
+			'options' => $products,
+			'default' => $productWidgetTypes['Deal of the Week']['Product']['id'],
+			'label' => false
+		)); ?>
+	</div>
+	<div id="best-edit">
+	<?php echo $form->input('Widget.'.$productWidgetTypes['Deal of the Week']['Widget']['id'].'.product_id', array(
+		'options' => $products,
+		'default' => $productWidgetTypes['Best Selling']['Product']['id'],
+		'label' => false
+	)); ?>
+	</div>
+	<div id="home-products">
+		<h2>Netbooks</h2>
+		<div id="netbooks" class="content-box product">
+		</div>
+		<h2>Tablets</h2>
+		<div id="tablets" class="content-box product">
+		</div>
+		<h2>Nettops</h2>
+		<div id="nettops" class="content-box product">
+		</div>
+	</div>
+</div>
+<div id="sidebar">
+	<?php echo $form->submit('Save Changes'); ?>
+</div>
+<?php /* foreach($productWidgetTypes as $key => $productWidgetType): ?>
+	<div id="<?php echo $key;?>">
+		<h3><?php echo $label[$key]; ?></h3>
+		<?php foreach($productWidgetType as $productWidget): ?>
+		<?php echo $prod->widget($productWidget, $key); ?>
+
+		<?php echo $form->input('product_id', array(
+			'options' => $products,
+			'default' => $productWidget['Product']['id'])
+		); ?>
+		<?php endforeach; ?>
+	</div>
+<?php endforeach; */?>
+<?php echo $form->end(); ?>

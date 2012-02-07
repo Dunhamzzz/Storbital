@@ -1,0 +1,23 @@
+<?php
+$count = count($products);
+$encodedTerms = urlencode($terms);
+$prod->setLocalRegion($localRegion);
+if(!empty($products)): ?>
+<ul id="search-autocomplete">
+<?php foreach($products as $product) {
+	echo $prod->widget($product, 'autocomplete');
+} ?>
+<li id="autocomplete-notes"><p>
+<?php if($total > 5) :?>
+	<a href="/search?q=<?php echo $encodedTerms;?>">More results for <strong><?php echo $terms;?></strong><br/>
+	Showing <?php echo $count;?> of <?php echo $total;?> products.</a>
+<?php elseif($count > 1): ?>
+	<a href="/search?q=<?php echo $encodedTerms;?>">Showing all <?php echo $count;?> products for <strong><?php echo $terms;?></strong>.</a>
+<?php else: ?>
+	<a href="/search?q=<?php echo $encodedTerms;?>">1 product found for <strong><?php echo $terms;?></strong>.</a>
+<?php endif;?>
+</p></li>
+</ul>
+<?php else: ?>
+	<p id="autocomplete-empty">No products found for '<?php echo $terms;?>'.</p>
+<?php endif;?>

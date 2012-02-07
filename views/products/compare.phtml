@@ -1,0 +1,42 @@
+<div class="content-box">
+<h2>Compare your Shortlist</h2>
+<?php if(empty($products)) :?>
+<p><strong>You currently have no products in your Storbital shortlist to compare, add products to your shortlist by using the green &quot;Shortlist&quot; buttons across the site.</strong></p>
+<?php else: ?>
+<?php
+$count = count($products);
+?>
+<table id="compare" cellpadding="0" cellspacing="0">
+<caption>This page contains a list of all the products you've shortlisted as you browse Storbital.</caption>
+<thead><tr>
+<td></td>
+<?php for($i=0; $i < $count; $i++): ?>
+	<th class="column-header">
+	<a href="<?php echo $prod->link($products[$i], true);?>"  style="background-image: url(<?php echo $storbital->imageURL($products[$i]['Product']['image_dir'], $products[$i]['Product']['image']);?>);">
+	<?php echo $products[$i]['Product']['name'];?>
+	<span><?php if(!empty($products[$i]['Product'][$localRegion['lowest_key']])) {
+		echo 'From <strong class="price">'.$localRegion['currency_symbol_html'].$products[$i]['Product'][$localRegion['lowest_key']].'</strong>';
+	} else {
+		echo 'No Prices';
+	}?></span></a>
+	<?php if(!empty($products[$i]['Product']['short_desc'])) {
+		echo '<p>'.$products[$i]['Product']['short_desc'].'</p>';
+	} ?>
+	</th>
+<?php endfor; ?>
+</tr></thead>
+<tbody>
+<tr><th colspan="<?php echo $count+1;?>" class="compare-header">Details</th></tr>
+<tr><th>Manufacturer</th>
+<?php for($i=0; $i < $count; $i++): ?>
+	<td><?php echo $html->link($products[$i]['Manufacturer']['name'], array(
+		'controller' => 'manufacturers',
+		'action' => 'view',
+		'slug' => $products[$i]['Manufacturer']['url_slug']
+	));?></td>
+<?php endfor; ?>
+</tr>
+</tbody>
+</table>
+<?php endif; ?>
+</div>

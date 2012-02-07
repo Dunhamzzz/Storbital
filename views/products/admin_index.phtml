@@ -1,0 +1,98 @@
+<p>Use this page to explore the database of products and edit them, <span class="highlight">highlighted rows</span> are unpublished and will not appear on the main site. <? echo $this->element('addButton'); ?></p>
+<?php echo $form->create('Product', array('action' => 'admin_index', 'id' => 'filters')); ?>
+<fieldset class="filter-options">
+<legend>Filter Products</legend>
+<p>Filter the displayed results with the form below:</p>
+<?php
+echo $form->input('manufacturer_id', array('label' => 'By Manufacturer', 'empty' => true));
+$formOptions = array('options' => array('' => '', '0' => 'No', '1' => 'Yes'));
+echo $form->input('publish', array_merge($formOptions, array('hiddenField' => false, 'label' => 'Published')));
+echo $form->input('popular', array_merge($formOptions, array('hiddenField' => false)));
+echo $form->input('user_id', array('label' => 'By User', 'empty' => true));?>
+<button type="submit" name="data[filter]" value="filter">Filter</button>
+<button type="submit" name="data[reset]" value="reset">Reset</button>
+</fieldset>
+<?php echo $form->end()?>
+<?php echo $this->element('pagination'); ?>
+<table class="list-table" id="products-list" cellpadding="0" cellspacing="0">
+<thead>
+	<tr>
+		<th style="width: 100px;">Image</th>
+		<th><?php echo $paginator->sort('Name', 'name', array('url' => $urlOptions)); ?></th>
+		<th>Description</th>
+		<th>Author</th>
+		<th>Links</th>
+		<th>Popular</th>
+	</tr>
+</thead>
+<tbody>
+	<?php
+	if(!empty($products)) {
+		foreach($products as $product) {
+			$class = '';
+			if($product['Product']['publish'] == 0) {
+				$class = ' class="highlight"';
+			}
+			if($product['Product']['popular'] == 1) {
+				$class = ' class="popular"';
+			}
+		?>
+		<tr id="link-<?php echo $product['Product']['id'];?>" <?php echo ife($class, $class)?>>
+			<td class="admin-image-cell"><?php echo $storbital->image($product['Product']['image_dir'], $product['Product']['image'], 'small')?></td>
+			<td class="left">
+			
+		<?php
+			if($product['Product']['publish'] == 1) {
+				echo $prod->link($product);
+			} else {
+				echo $product['Product']['name'];
+			}
+			echo "&nbsp;&nbsp;";
+			echo $html->link(
+				$html->image('icons/edit.png', array('alt' => 'Edit', 'class' => 'inline-icon')),
+				array('controller' => 'products', 'action' => 'edit', 'admin' => true, $product['Product']['id']),
+				array('escape' => false)
+			);
+			?></td>
+			<td><?php echo $text->truncate($product['Product']['description'], 80, array('html' => false, 'ending' => '...'))?></td>
+			<td><?php echo $product['User']['username']; ?></td>
+			<td><?php
+			$numLinks = count($product['Link']);
+			if($numLinks > 0) {
+				echo $html->link($numLinks,
+					array(
+						'controller' => 'links',
+						'action' => 'index',
+						'admin' => true,
+						'Product.id' => $product['Product']['id']
+					),
+					
+					array(
+						'title' => $numLinks. ' links.'
+					)
+				);
+			} else {
+				echo '<span title="No Links">0</span>';
+			}
+			echo $html->link(
+				$html->image('icons/link_add.png', array('alt' => 'Add Link', 'class' => 'inline-icon')),
+				array('controller' => 'links', 'action' => 'add', 'productId' => $product['Product']['id']),
+				array('escape' => false)
+			);
+			?>
+			</td>
+			<td><input autocomplete="off" id="p-<?php echo $product['Product']['id']?>" class="popular-checkbox" type="checkbox" name="data[publish]" <?=ife($product['Product']['popular'],' checked="checked"');?>/></td>
+		</tr>
+		<?php }
+	} else {
+		echo '<tr><td colspan="8" style="text-align: center"><p>There are no results for this search critera.</p></td></tr>';
+	}
+	?>
+	</tbody>
+</table>
+<p><?php
+echo $paginator->counter(array(
+	'format' => 'Page %page% of %pages%, showing %current% products out of
+			 %count% total.'
+));
+?></p>

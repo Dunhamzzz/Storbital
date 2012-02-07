@@ -1,0 +1,92 @@
+<div id="fb-root"></div>
+<script type="text/javascript">
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId  : '180948576449',
+      status : true, // check login status
+      cookie : true, // enable cookies to allow the server to access the session
+      xfbml  : true  // parse XFBML
+    });
+  };
+
+  (function() {
+    var e = document.createElement('script');
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    e.async = true;
+    document.getElementById('fb-root').appendChild(e);
+  }());
+</script>
+<script type="text/javascript"><!--
+$(function() {
+	 $("#ebay-tabs").tabs("#ebay-panes > div");
+	 $("#similiar-scrollable").scrollable();
+});
+--></script>
+<div id="product-page-wrapper">
+<div id="product-view-wrapper">
+	<div id="product-info">
+	<?php
+		echo $storbital->image($product['Product']['image_dir'], $product['Product']['image'], 'normal', array('class' => 'product-image'));
+		echo $storbital->image($product['Manufacturer']['logo_dir'],$product['Manufacturer']['logo'],'normal',array('alt' => $product['Manufacturer']['name']));
+	?>
+		<h2><span><?=$product['Product']['name']?></span></h2>
+		<p id="product-description"><?php echo nl2br($product['Product']['description'])?></p>
+		<fb:like width="454" href="http://buyersguide.umpcmedia.com<?=$html->url();?>" action="recommend"/>
+	</div>
+	<div id="specifications">
+		<h2><span><?=$product['Product']['name']?></span> Specifications</h2>
+		<dl>
+			<?php echo $prod->specifications($product); ?>
+		</dl>
+	</div>
+</div>
+<div id="product-links-wrapper">
+	<div id="product-retailer-links">
+		<h2 id="prices">Prices and where to buy for the <span><?=$product['Product']['name']?></span></h2>
+		<?php
+		if(!empty($links)) { ?>
+		<table cellpadding="0" cellspacing="5">
+			<tr>
+				<th>Retailer</th>
+				<th>Price</th>
+				<th>Buy Now</th>
+			</tr>
+			<?php
+			foreach($links as $link): ?>
+			<tr>
+				<td><?php echo $html->link(
+				$storbital->image($link['Retailer']['logo_dir'], $link['Retailer']['logo']),
+				$link['Retailer']['url'], array('target' => '_blank', 'alt' => 'Visit '.$link['Retailer']['name'], 'escape' => false));?>
+				</td>
+				<td><?=$localRegion['currency_symbol_html'].$link['Link']['price']?></td>
+				<td><a class="product-link" href="<?=$link['Link']['url']?>"><b>View Product Page</b></a></td>
+			</tr>
+			<?php endforeach; ?>
+		</table>
+		Know of another place you can buy this? <?=$html->link('Tell us here', array('controller' => 'links', 'action' => 'add', $product['Product']['id']));?>.
+		<?php
+		} else {
+			echo '<p>There are no links currently for this product. '.$html->link('Add one now', array('controller' => 'links', 'action' => 'add', $product['Product']['id']), array('rel'=>'nofollow')).'.</p>';
+		}?>
+	</div>
+	<div id="reviews">
+	<h2>User Reviews</h2>
+	<?php if(!empty($product['Review'])):?>
+	<?php else: ?>
+		<p>There are no reviews for the <?php echo $product['Product']['name'];?> yet.</p>
+	<?php endif;?>
+	<?php if(!isset($user)): ?>
+		<?php echo $storbital->login('You need to', 'to submit a review');?>
+	<?php else: ?>
+		<?php echo $this->element('reviewForm');?>
+	<?php endif; ?>
+	
+	</div>
+	<div id="product-ebay-links">
+		<h2>Search Results from <a href="http://www.ebay.com">Ebay</a></h2>
+		<?php
+		$ebaySearchTerms = urlencode($product['Product']['name']);
+	//	echo $prod->printEbayLinks($product['EbaySearchResult'], $ebaySearchTerms);?>
+	</div>
+</div>
+</div>

@@ -1,0 +1,11 @@
+<div class="recent widget">
+	<a href="<?php echo $content['url']; ?>" title="<?php echo $content['name']; ?>">
+		<?php echo $storbital->image($content['image'][0],$content['image'][1], 'small', array('alt' => $content['name'])); ?>
+		<span class="name"><?php echo $content['name'];?></span>
+		<span class="cpu"><?php echo $content['cpu']['full_name'];?></span>
+		<span class="gpu"><?php echo $content['gpu']['full_name'];?></span>
+		<?php if(isset($content['lowest'])): ?>
+		<span class="price">From <strong><?php echo $content['lowest'];?></strong></span>
+		<?php endif; ?>
+	</a>
+</div>

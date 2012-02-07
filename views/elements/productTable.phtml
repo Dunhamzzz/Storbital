@@ -1,0 +1,92 @@
+<?php
+$paginator->options(array(
+	'update' => '#products-wrapper',
+	'before' => $this->Js->get('#indicator-bar')->effect('fadeIn', array('buffer' => false)),
+	'complete' => $this->Js->get('#indicator-bar')->effect('fadeOut', array('buffer' => false)),
+));
+?>
+<div id="products-table-header">
+<div id="indicator-bar">Loading</div>
+<?php if(!empty($urlOptions)) :?>
+	<div id="current-filters">
+		<p><span id="filter-label">Filters: </span>
+		 <?php echo $prod->printCurrentFilters($urlOptions);?>
+		</p>
+	</div>
+<?php endif;
+echo $this->element('pagination');
+?>
+</div>
+<table id="products" cellpadding="0" cellspacing="0">
+<thead>
+<tr>
+	<th id="th-image"></th>
+	<th id="th-model"><?php echo $paginator->sort('Name','name'); ?></th>
+	<th id="th-cpu">CPU</th>
+	<th id="th-ram"><?php echo $paginator->sort('RAM', 'ram_mb'); ?></th>
+	<th id="th-screen" title="Inches"><?php echo $paginator->sort('Screen', 'screen_size_inches'); ?></th>
+	<th id="th-storage"><?php echo $paginator->sort('Storage', 'storage_size_max_gb');?></th>
+	<th id="th-weight"><?php echo $paginator->sort('Weight', 'weight_kg'); ?></th>
+	<th id="th-ports">Connectivity/Ports</th>
+	<th id="th-cheapest">Cheapest</th>
+</tr>
+</thead>
+<tbody>
+<?php
+if(!empty($products)){
+	$i = 0;
+	foreach($products as $product) {
+		$i++;
+		?>
+	<tr<? if($i % 2 == 0 ) echo ' class="alt"';?>>
+		<td class="td-image"><?php echo $storbital->image($product['Product']['image_dir'], $product['Product']['image'], 'small')?></td>
+		<td><h4><?php echo $prod->link($product);?></h4></td>
+		<td><?php echo $prod->spec('cpu_id', $product['Cpu']);?></td>
+		<td><?php echo $prod->spec('ram_mb', $product['Product']['ram_mb']);?></td>
+		<td><?=round($product['Product']['screen_size_inches'],1)?>''<?
+		e(ife($product['Product']['hd_screen'],' <abbr title="High Definition">HD</abbr>'));
+		e(ife($product['Product']['resolution'],'<br/><span class="notation">('.str_replace('x',' x ',$product['Product']['resolution']).')</span>'));
+	
+		?></td>
+		<td><?=$prod->printStorage($product['Product']['storage_size_min_gb'],$product['Product']['storage_size_max_gb'],$product['StorageType']['name']);?></td>
+		<td><?
+		if($product['Product']['weight_kg'] > 0) {
+			echo round($product['Product']['weight_kg'],2).'kg';
+		}?></td>
+		<td><?php
+		//Ethernet Port
+		echo ife($product['Product']['ethernet_port'], $prod->printIcon('ethernet_port'));
+	
+		//Wireless
+		if(substr($product['Product']['wireless'],-1) == 'n') {
+			echo  $html->image('icons/wireless-n.png');
+		} elseif(substr($product['Product']['wireless'],0,2) == 'bg') {
+			echo $html->image('icons/wireless-bg.png');
+		}
+		echo ife($product['Product']['bluetooth'], $prod->printIcon('bluetooth'));
+		echo ife($product['Product']['usb_port'],  $prod->printIcon('usb_port', array('title' => $product['Product']['usb_port'].' USB Ports')));
+		echo ife($product['Product']['vga_port'], $prod->printIcon('vga_port'));
+		echo ife($product['Product']['hdmi_port'], $prod->printIcon('hdmi_port'));
+		echo ife($product['Product']['card_reader'], $prod->printIcon('card_reader'));
+		
+		?></td>
+		<td><?php echo $prod->printLowestPrice($product['Link'], $localRegion, $product['Product']['url_slug']);?></td>
+	</tr>
+	<? }
+} else {
+	echo '<tr><td colspan="10"><p>There are no results for this search critera.</p></td></tr>';
+}
+	?>
+</tbody>
+</table>
+<p><?
+$showAllLink = '';
+if(!empty($urlOptions)) {
+	$showAllLink = $html->link('Show all products','/').'.';
+}
+echo $paginator->counter(array(
+		'format' => 'Page %page% of %pages%, showing %current% products out of
+				 %count%. '.$showAllLink
+	));
+?></p>
+<? echo $this->Js->writeBuffer(); ?>

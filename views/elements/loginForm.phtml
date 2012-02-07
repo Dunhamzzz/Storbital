@@ -1,0 +1,11 @@
+<?php
+echo $form->create('User', array(
+	'action' => 'login',
+	'admin' => false,
+	'id' => 'quick-login'
+));
+echo $form->input('username', array('size' => '18'));
+echo $form->input('password', array('size' => '18'));
+echo $form->input('remember_me', array('label' => 'Remember Me', 'type' => 'checkbox'));
+echo $form->submit('Login');
+echo $form->end();

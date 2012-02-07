@@ -1,0 +1,70 @@
+<p>Use this page to manage the manufacturers.</p>
+<?=$form->create('Manufacturer', array('action' => 'index', 'type' => 'file', 'class' => 'admin-input-form'));?>
+<fieldset>
+<legend><?=ucfirst($pageAction)?> Manufacturer</legend>
+<?
+echo $form->input('name');
+echo $form->input('url_slug');
+echo $form->input('logo', array('type' => 'file'));
+if($pageAction == 'edit') echo 'Leave blank to not change the logo.';
+echo $form->input('logo_dir', array('type' => 'hidden'));
+echo $form->input('logo_mimetype', array('type' => 'hidden'));
+echo $form->input('logo_filesize', array('type' => 'hidden'));
+?>
+<div class="submit">
+<input type="submit" value="Save" />
+<?
+if($pageAction == 'edit') {
+	echo ' or '.$html->link('Cancel', array('action' => 'index'));
+}?>
+</div>
+</fieldset>
+<?if($pageAction == 'edit'): ?>
+<div class="info-box">
+<p>You are now <strong>editing</strong> the manufacturer '<?=$this->data['Manufacturer']['name']?>'. You can add a new one by clicking <?=$html->link('here',array('action' => 'index'))?>.</p>
+<p>The current logo is displayed below:<br/><br/>
+<? if(!empty($this->data['Manufacturer']['logo'])) {
+ echo $storbital->image($this->data['Manufacturer']['logo_dir'], $this->data['Manufacturer']['logo'], 'normal', array('class' => 'logo-preview-info'));
+} ?>
+</p>
+</div>
+<?
+endif;
+echo $form->end();
+echo $this->element('pagination');
+?>
+<table id="manu-list" class="list-table" cellpadding="0" cellspacing="0">
+<thead>
+<tr>
+	<th>Logo</th>
+	<th><?php echo $paginator->sort('Name', 'name'); ?></th>
+	<th><?php echo $paginator->sort('# of Products', 'product_count'); ?></th>
+</tr>
+</thead>
+<? foreach($manus as $manu): ?>
+<tr>
+	<td class="manu-logo-cell">
+	<?=$storbital->image($manu['Manufacturer']['logo_dir'],$manu['Manufacturer']['logo']);?>
+</td>
+	<td><?
+		echo $html->link(
+				$manu['Manufacturer']['name'],
+				array('controller' => 'manufacturers', 'action' => 'view', 'admin' => false, $manu['Manufacturer']['name']),
+				array('target' => '_blank')
+			);
+		echo "&nbsp;&nbsp;";
+		echo $html->link(
+			$html->image('icons/edit.png', array('alt' => 'Edit', 'class' => 'inline-icon')),
+			array($manu['Manufacturer']['id']),
+			array('escape' => false)
+		);
+	?></td>
+	<td><?=$html->link(count($manu['Product']), array(
+		'controller' => 'products',
+		'action' => 'index',
+		'admin' => true,
+		'Product.manufacturer_id' => $manu['Manufacturer']['id']
+	))?></td>
+</tr>
+<? endforeach;?>
+</table>

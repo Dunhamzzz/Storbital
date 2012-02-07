@@ -1,0 +1,60 @@
+<?php
+$html->script('jquery/jquery.loopSlider.min.js', array('inline' => false));
+$html->scriptBlock("$(function(){ $('#slideshow').loopedSlider({
+		autoStart: 3500,
+		restart: 5000,
+		slidespeed: 600
+	});});", array('inline' => false));
+if(isset($shortlist)) {
+	$prod->setShortlist($shortlist);
+}
+?>
+<div id="slideshow" class="content-box"><div class="slideshow-container">
+	<div class="slides">
+		<div>
+			<p><span class="slide-title">Meet the Dell Streak</span>
+			Description of product slide.
+			</p>
+			<img src="/img/lib/product/image/Dell_Streak.jpg"/>
+		</div>
+		<div>
+			<p><span class="slide-title">Looking for the latest news?</span>
+			Catch up on the latest products and releases in the gadget industry on our <a href="/blog">blog</a>.
+			<img src="/img/lib/product/image/Dell_Mini_12.jpg"/>
+			</p>
+		</div>
+		<div>
+			<p><span class="slide-title">STORBITAL</span>
+			Description of product slide.
+			<img src="/img/lib/product/image/Dell_Mini_12.jpg"/>
+			</p>
+		</div>
+	</div>
+	</div>
+<div id="slideshow-nav">
+	<a class="next">next</a>
+	<a class="previous">previous</a>
+</div>
+</div>
+<?php echo $prod->widget($dotw); ?>
+<?php echo $prod->widget($best); ?>
+<div id="home-products">
+	<h2><a href="/netbooks">Netbooks</a></h2>
+	<div class="content-box product">
+	<?php foreach($netbooks as $netbook) {
+		echo $prod->widget($netbook, 'homepage-grid');
+	}?>
+	</div>
+	<h2><a href="/tablets">Tablets</a></h2>
+	<div class="content-box product">
+	<?php foreach($tablets as $tablet) {
+		echo $prod->widget($tablet, 'homepage-grid');
+	}?>
+	</div>
+	<h2><a href="/nettops">Nettops</a></h2>
+	<div class="content-box product">
+	<?php foreach($nettops as $nettop) {
+		echo $prod->widget($nettop, 'homepage-grid');
+	}?>
+	</div>
+</div>

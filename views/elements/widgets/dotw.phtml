@@ -1,0 +1,8 @@
+<div id="dotw" class="content-box dotw">
+	<div class="corner-flag"><span>Deal<span> of the week &gt;&gt;</span></span></div>
+	<?php echo $storbital->image($content['image'][0],$content['image'][1], null, array('alt' => $content['name'])); ?>
+	<a href="<?php echo $content['url']; ?>" title="<?php echo $content['name']; ?>">
+		<span class="dotw-text"><span class="name"><?php echo $content['name'];?></span><br />
+		<span class="cpu"><?php echo $content['cpu']['full_name'];?></span></span>
+	</a>
+</div>

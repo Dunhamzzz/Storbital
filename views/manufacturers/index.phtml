@@ -1,0 +1,25 @@
+<h2>View netbooks/nettops by manufacturer</h2>
+<div id="manufacturers">
+<?
+foreach($manufacturers as $manufacturer) {
+	$productCount = count($manufacturer['Product']);
+	//Categorize Products
+	$productList = array();
+	foreach($manufacturer['Product'] as $product) {
+		$productList[] = $html->link($product['name'], '/specifications/'.$product['url_slug']);
+	}
+	if(!empty($productList)) { ?>
+		<div class="manufacturer-wrapper"><?
+		e($html->link(
+			$storbital->image($manufacturer['Manufacturer']['logo_dir'],$manufacturer['Manufacturer']['logo'], 'normal', array('class' => 'manu-image')),
+			'/manufacturers/view/'.$manufacturer['Manufacturer']['name'],
+			array(
+				'escape' => false,
+				'title' => 'View products by '.$manufacturer['Manufacturer']['name']
+			)
+		));
+		echo '<p>'.$text->toList($productList).'</p></div>';
+	}
+}
+?>
+</div>

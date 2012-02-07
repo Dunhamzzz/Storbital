@@ -1,0 +1,5 @@
+<h2><?php echo $title_for_layout;?></h2>
+<?php if(isset($product)): ?>
+ <p>Write a review of the <?php echo $product['Product']['name'];?></p>
+<?php endif;?>
+<?php echo $this->element('reviewForm');?>

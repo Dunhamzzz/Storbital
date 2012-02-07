@@ -1,0 +1,46 @@
+<p>Use this page to add processors (CPUs) to the Stobiral database.</p>
+<?php echo $form->create('Cpu', array('action' => 'index', 'class' => 'admin-input-form')); ?>
+<fieldset>
+<legend>Add CPU</legend>
+<?php
+echo $form->input('name');
+echo $form->input('full_name');
+echo $form->input('speed_mhz');
+echo $form->input('url', array('label' => 'Info URL'));
+echo $form->submit('Save');
+?>
+</fieldset>
+<?php echo $form->end();?>
+<?php echo $this->element('pagination'); ?>
+<table class="list-table" cellpadding="0" cellspacing="0">
+	<thead>
+	<tr>
+		<th><?php echo $paginator->sort('Name','name');?></th>
+		<th>Full Name</th>
+		<th>Speed (Mhz)</th>
+		<th>Info</th>
+		<th># Products</th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach($cpus as $cpu) :?>
+	<tr>
+		<td><?php echo $cpu['Cpu']['name'];?></td>
+		<td><?php echo $cpu['Cpu']['full_name'];?></td>
+		<td><?php echo $cpu['Cpu']['speed_mhz'];?></td>
+		<td><?php echo $html->link($html->image('icons/link_go.png',array('class' => 'inline-icon')),$cpu['Cpu']['url'], array('escape' => false));?></td>
+		<td><?php
+			echo $cpu['Cpu']['product_count'];
+			if($cpu['Cpu']['product_count'] == 0) {
+				echo $html->link($html->image('icons/delete.png'),array(
+					'action'=>'delete',
+					$cpu['Cpu']['id']),
+					array('class' =>' confirm_delete' ,'escape' => false));
+			}
+			?>
+		</td>
+	</tr>
+	<?php endforeach; ?>
+	</tbody>
+</table>
+</div>
